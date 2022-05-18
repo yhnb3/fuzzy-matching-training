@@ -1,18 +1,20 @@
 import { useState } from "react";
 
 import "./App.css";
-import FuzzyMatch from "./components/FuzzyMatch";
-import { fuzzyMatchingRegExp } from "./utils/fuzzyMathcingRegExp";
-
-const TEST_STRING = ["크리스마스", "크마스", "스마스"];
+import SearchResult from "./components/SearchResult";
 
 function App() {
   const [value, setValue] = useState("");
-  const [regExpString, setRegExpString] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setRegExpString(fuzzyMatchingRegExp(value));
+    fetch("dissNameCodeList.json")
+      .then((res) => res.json())
+      .then((data) => {
+        const newData = data.response.body.items.item;
+        setSearchResult(newData);
+      });
   };
 
   const handleChange = (e) => {
@@ -22,19 +24,7 @@ function App() {
     <div className="App">
       <form onSubmit={handleSubmit}>
         <input type="text" onChange={handleChange} value={value}></input>
-        <div>
-          {TEST_STRING.map((searchValue) => {
-            if (regExpString.length === 0)
-              return <p key={searchValue}>{searchValue}</p>;
-            return (
-              <FuzzyMatch
-                key={searchValue}
-                value={searchValue}
-                regExpString={regExpString}
-              />
-            );
-          })}
-        </div>
+        <SearchResult datas={searchResult} searchText={value} />
       </form>
     </div>
   );

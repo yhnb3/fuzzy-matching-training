@@ -1,4 +1,4 @@
-const FuzzyMatch = ({ value, regExpString }) => {
+const FuzzyMatch = ({ value, regExpString, id }) => {
   const fuzzyRegExp = new RegExp(regExpString);
   const highlighted = new Set();
   const markString = value.replace(fuzzyRegExp, (match, ...groups) => {
@@ -19,7 +19,7 @@ const FuzzyMatch = ({ value, regExpString }) => {
     <p>
       {markString.split("").map((element, idx) => {
         if (highlighted.has(idx)) {
-          return <mark key={`${element}-${idx}`}>{element}</mark>;
+          return <strong key={`${element}-${id}- ${idx}`}>{element}</strong>;
         }
         return element;
       })}

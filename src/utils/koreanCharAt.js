@@ -30,6 +30,7 @@ export const koreanCharAt = (target) => {
     )}]`;
     return regExpString;
   } else if (target.charCodeAt(0) >= offSet) {
+    if ((target.charCodeAt(0) - offSet) % 28 > 0) return target;
     const start =
       target.charCodeAt(0) -
       offSet -
